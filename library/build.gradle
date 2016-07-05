@@ -39,12 +39,16 @@ targetCompatibility = 1.7
 dependencies {
     compile 'junit:junit:4.11'
     compile 'de.greenrobot:eventbus:2.4.0'
+    doppel 'doppl.de.greenrobot:eventbus:2.4.0.0@dop'
     compile 'com.google.code.gson:gson:2.6.2'
+    doppel 'doppel.com.google.code.gson:gson:2.6.2.1@dop'
     provided 'com.squareup.retrofit:retrofit:1.9.0'
+    doppel 'doppl.com.squareup.retrofit:retrofit:1.9.0.0@dop'
+    doppel 'doppl.io.reactivex:rxjava:1.0.0.0@dop'
 }
 
-group = 'co.touchlab'
-version = '0.9.1'
+group = 'doppl.co.touchlab'
+version = '0.9.1.0'
 
 publishing {
     publications {
@@ -52,6 +56,7 @@ publishing {
             artifactId 'magicthreads'
             from components.java
 
+            artifact doppelArchive
         }
     }
     repositories {
@@ -60,4 +65,21 @@ publishing {
             url dopplMavenDeploy
         }
     }
+}
+
+j2objcConfig {
+    extraLinkerArgs '-lsqlite3'
+
+    testPattern {
+
+        // Exclude a single test without needing to specify the full path
+        exclude '**/*.java'
+
+    }
+
+    testMinExpectedTests 0
+
+    extraObjcCompilerArgs '-Wno-deprecated'
+
+    finalConfigure()          // Must be last call to configuration
 }

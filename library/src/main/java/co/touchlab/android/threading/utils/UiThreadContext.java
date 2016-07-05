@@ -1,7 +1,5 @@
 package co.touchlab.android.threading.utils;
 
-import android.os.Looper;
-
 /**
  * Checks current thread, and throws a RuntimeException if you're not where you're supposed to
  * be.
@@ -17,17 +15,21 @@ public class UiThreadContext
     {
         if(! isInUiThread())
         {
-            throw new RuntimeException("This call must be in UI thread");
+            nativeThrow("This call must be in UI thread");
         }
     }
 
-    public static boolean isInUiThread()
-    {
-        Thread uiThread = Looper.getMainLooper().getThread();
-        Thread currentThread = Thread.currentThread();
+    public static native boolean isInUiThread()/*-[
+        return [NSThread isMainThread];
+     ]-*/;
 
-        return uiThread == currentThread;
-    }
+    private static native void nativeThrow(String message)/*-[
+        NSException* myException = [NSException
+                                    exceptionWithName:@"AssertException"
+                                    reason:message
+                                    userInfo:nil];
+        @throw myException;
+  ]-*/;
 
     /**
      * Checks if you're not in the UI thread.
@@ -36,7 +38,7 @@ public class UiThreadContext
     {
         if(isInUiThread())
         {
-            throw new RuntimeException("This call must be in background thread");
+            nativeThrow("This call must be in background thread");
         }
     }
 }
