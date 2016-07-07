@@ -4,8 +4,6 @@ import android.os.Handler;
 
 import org.junit.Before;
 
-import java.io.File;
-
 import co.touchlab.magicthreadsdemo.test.utils.ThreadHelper;
 
 /**

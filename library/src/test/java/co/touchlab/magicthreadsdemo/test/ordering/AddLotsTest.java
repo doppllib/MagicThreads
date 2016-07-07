@@ -10,7 +10,8 @@ import co.touchlab.doppel.testing.DopplSkipJavaJUnit4ClassRunner;
 import co.touchlab.magicthreadsdemo.test.BaseSimpleQueueTestNomatch;
 import co.touchlab.magicthreadsdemo.test.StaticLog;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by kgalligan on 10/5/14.

@@ -4,12 +4,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import co.touchlab.android.threading.tasks.persisted.PersistedTaskQueue;
-import co.touchlab.android.threading.tasks.persisted.storage.DefaultPersistedTaskQueue;
 import co.touchlab.doppel.testing.DoppelTest;
 import co.touchlab.doppel.testing.DopplSkipJavaJUnit4ClassRunner;
 import co.touchlab.magicthreadsdemo.test.utils.ThreadHelper;
 
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created by kgalligan on 10/4/14.

@@ -3,7 +3,6 @@ package co.touchlab.magicthreadsdemo.test;
 import org.junit.Test;
 
 import co.touchlab.android.threading.tasks.persisted.PersistedTaskQueue;
-import co.touchlab.android.threading.tasks.persisted.storage.DefaultPersistedTaskQueue;
 import co.touchlab.android.threading.utils.UiThreadContext;
 import co.touchlab.magicthreadsdemo.test.utils.ThreadHelper;
 

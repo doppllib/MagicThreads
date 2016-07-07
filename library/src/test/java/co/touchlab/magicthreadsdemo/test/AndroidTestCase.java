@@ -2,7 +2,6 @@ package co.touchlab.magicthreadsdemo.test;
 import android.app.Application;
 import android.content.Context;
 import android.content.IOSContext;
-import android.content.TestingContext;
 import android.os.Looper;
 
 import org.junit.Assert;

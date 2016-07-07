@@ -20,7 +20,7 @@ import co.touchlab.magicthreadsdemo.test.AndroidTestCase;
 import co.touchlab.magicthreadsdemo.test.utils.ThreadHelper;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created by kgalligan on 10/13/14.

@@ -1,19 +1,17 @@
 package co.touchlab.magicthreadsdemo.test;
 
-import android.os.Handler;
-
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import co.touchlab.android.threading.tasks.persisted.PersistedTaskQueue;
-import co.touchlab.android.threading.tasks.persisted.storage.DefaultPersistedTaskQueue;
 import co.touchlab.android.threading.utils.UiThreadContext;
 import co.touchlab.doppel.testing.DoppelTest;
 import co.touchlab.doppel.testing.DopplSkipJavaJUnit4ClassRunner;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 /**
  * <a href="http://d.android.com/tools/testing/testing_android.html">Testing Fundamentals</a>
  */
