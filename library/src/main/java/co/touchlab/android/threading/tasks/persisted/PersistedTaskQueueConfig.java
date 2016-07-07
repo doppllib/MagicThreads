@@ -89,7 +89,7 @@ public class PersistedTaskQueueConfig
             if(config.persistenceProvider == null)
             {
                 config.persistenceProvider = new CommandPersistenceProvider(
-                        new LocalDatabaseFactory(SimpleDatabaseHelper.getInstance(context, PERSISTED_QUEUE)
+                        new LocalDatabaseFactory(new SimpleDatabaseHelper(context, PERSISTED_QUEUE)
                                                                      .getWritableDatabase()));
             }
 

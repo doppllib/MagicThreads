@@ -1,5 +1,7 @@
 package co.touchlab.android.threading.utils;
 
+import android.os.Looper;
+
 /**
  * Checks current thread, and throws a RuntimeException if you're not where you're supposed to
  * be.
@@ -15,21 +17,21 @@ public class UiThreadContext
     {
         if(! isInUiThread())
         {
-            nativeThrow("This call must be in UI thread");
+            throw new RuntimeException("This call must be in UI thread");
         }
     }
 
-    public static native boolean isInUiThread()/*-[
-        return [NSThread isMainThread];
-     ]-*/;
+    public static boolean isInUiThread()
+    {
+        Looper mainLooper = Looper.getMainLooper();
+        if(mainLooper == null)
+            throw new RuntimeException("Main looper not initialized");
 
-    private static native void nativeThrow(String message)/*-[
-        NSException* myException = [NSException
-                                    exceptionWithName:@"AssertException"
-                                    reason:message
-                                    userInfo:nil];
-        @throw myException;
-  ]-*/;
+        Thread uiThread = mainLooper.getThread();
+        Thread currentThread = Thread.currentThread();
+
+        return uiThread == currentThread;
+    }
 
     /**
      * Checks if you're not in the UI thread.
@@ -38,7 +40,16 @@ public class UiThreadContext
     {
         if(isInUiThread())
         {
-            nativeThrow("This call must be in background thread");
+            throw new RuntimeException("This call must be in background thread");
         }
     }
+
+    /**
+     * This is obscure. Really just for testing to counterintuitively figure out if we're in UI test
+     * or command line. Probably a better way to do this.
+     * @return
+     */
+    public static native boolean isInIosUiThread()/*-[
+        return [NSThread isMainThread];
+     ]-*/;
 }

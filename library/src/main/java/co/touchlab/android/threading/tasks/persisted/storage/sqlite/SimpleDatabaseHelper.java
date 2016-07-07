@@ -17,19 +17,7 @@ public class SimpleDatabaseHelper extends SQLiteOpenHelper
 {
     private final static int VERSION = 1;
 
-    private static SimpleDatabaseHelper INSTANCE;
-
-    public static synchronized SimpleDatabaseHelper getInstance(Context context, String fileName)
-    {
-        if(INSTANCE == null)
-        {
-            INSTANCE = new SimpleDatabaseHelper(context.getApplicationContext(), fileName);
-        }
-
-        return INSTANCE;
-    }
-
-    private SimpleDatabaseHelper(Context context, String fileName)
+    public SimpleDatabaseHelper(Context context, String fileName)
     {
         super(context, fileName, null, VERSION);
     }
