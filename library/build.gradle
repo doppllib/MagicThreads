@@ -1,92 +1,120 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-
 buildscript {
     repositories {
         jcenter()
-        mavenCentral()
-//        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
-//        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://plugins.gradle.org/m2/" }
-        maven {
-            url dopplMavenDeploy
-        }
+        maven { url dopplMavenDeploy }
+        maven { url dopplRepo }
     }
     dependencies {
-        classpath "net.ltgt.gradle:gradle-apt-plugin:0.5"
-        classpath  group: 'co.touchlab.doppel', name: 'doppelgradle', version: '0.2.1-SNAPSHOT'
+        classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
+        classpath 'co.doppl:gradle:0.7.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
 
 allprojects {
     repositories {
         jcenter()
-        mavenCentral()
-//        maven { url "https://raw.github.com/Raizlabs/maven-releases/master/releases" }
-        maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local' }
-        maven {
-            url dopplMavenDeploy
-        }
+        maven { url dopplMavenDeploy }
+        maven { url dopplRepo }
     }
 }
 
 apply plugin: 'java'
-apply plugin: 'com.touchlab.doppel.doppelgradle'
-apply plugin: "net.ltgt.apt"
+apply plugin: 'co.doppl.gradle'
 apply plugin: 'maven-publish'
+apply plugin: 'net.ltgt.apt'
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
+def dopplCoreVersion = '0.7.1'
+def dopplEventbusVersion = '2.4.0.0'
+def dopplGsonVersion = '2.6.2.8'
+def dopplRetrofitVersion = '1.9.0.0'
+def dopplRxJavaVersion = '1.2.1.1'
+
 dependencies {
     compile 'junit:junit:4.11'
 
-//    compile 'commons-io:commons-io:1.4'
-    doppel 'doppl.commons-io:commons-io:1.4@dop'
+    provided "co.doppl.lib:androidbase:$dopplCoreVersion"
+    testCompile "co.doppl.lib:androidbasetest:$dopplCoreVersion"
 
-    testCompile 'org.apache.commons:commons-lang3:3.3.2'
-    doppel 'doppl.org.apache.commons:commons-lang3:3.3.2@dop'
+    doppl "co.doppl.lib:androidbase:$dopplCoreVersion:doppl"
+    testDoppl "co.doppl.lib:androidbasetest:$dopplCoreVersion:doppl"
 
     compile 'de.greenrobot:eventbus:2.4.0'
-    doppel 'doppl.de.greenrobot:eventbus:2.4.0.0@dop'
-    compile 'com.google.code.gson:gson:2.6.2'
-    doppel 'doppel.com.google.code.gson:gson:2.6.2.1@dop'
-    provided 'com.squareup.retrofit:retrofit:1.9.0'
-    doppel 'doppl.com.squareup.retrofit:retrofit:1.9.0.0@dop'
-    doppel 'doppl.io.reactivex:rxjava:1.0.0.0@dop'
+    doppl "co.doppl.de.greenrobot:eventbus:$dopplEventbusVersion:doppl"
 
-    testApt 'co.touchlab.doppel:testapt:0.2.1-SNAPSHOT'
+    compile 'com.google.code.gson:gson:2.6.2'
+    doppl "co.doppl.com.google.code.gson:gson:$dopplGsonVersion:doppl"
+
+    provided 'com.squareup.retrofit:retrofit:1.9.0'
+    doppl "co.doppl.com.squareup.retrofit:retrofit:$dopplRetrofitVersion:doppl"
+
+
+    doppl "co.doppl.io.reactivex:rxjava:$dopplRxJavaVersion:doppl"
 }
 
-group = 'doppl.co.touchlab'
+group = 'co.touchlab'
 version = '0.9.1.0'
+
+ext.bintrayGitUrl = 'https://github.com/doppllib/MagicThreads-doppl.git'
+
+apply from: "$dopplSharedScriptHome/bintray.gradle"
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId 'magicthreads'
             from components.java
+            artifact(dopplArchive) {
+                classifier 'doppl'
+                extension 'jar'
+            }
+            pom {
+                withXml {
+                    asNode().dependencies.dependency.find {
+                        it.artifactId.text() == "eventbus"
+                    }.version[0].value = dopplEventbusVersion
+                    asNode().dependencies.dependency.find {
+                        it.artifactId.text() == "eventbus"
+                    }.groupId[0].value = "co.doppl.de.greenrobot"
 
-            artifact doppelArchive
+                    asNode().dependencies.dependency.find {
+                        it.artifactId.text() == "retrofit"
+                    }.version[0].value = dopplRetrofitVersion
+                    asNode().dependencies.dependency.find {
+                        it.artifactId.text() == "retrofit"
+                    }.groupId[0].value = "co.doppl.com.squareup.retrofit"
+
+                    asNode().dependencies.dependency.find {
+                        it.artifactId.text() == "gson"
+                    }.version[0].value = dopplGsonVersion
+                    asNode().dependencies.dependency.find {
+                        it.artifactId.text() == "gson"
+                    }.groupId[0].value = "co.doppl.com.google.code.gson"
+                }
+            }
         }
     }
     repositories {
         maven {
-            // change to point to your repo, e.g. http://my.org/repo
             url dopplMavenDeploy
         }
     }
 }
 
-j2objcConfig {
-    extraLinkerArgs '-lsqlite3'
+test{
+    enabled = false
+}
 
-    testMinExpectedTests 0
+dopplConfig {
+    cycleFinderArgs '--whitelist', 'cycle_whitelist.txt'
 
-    extraObjcCompilerArgs '-Wno-deprecated'
+    copyMainOutput "iostest/dopplframework/main"
+    copyTestOutput "iostest/dopplframework/test"
 
-    xcodeTestProjectDir 'ios'  //  suggested directory name
-    xcodeTestTargetsIos 'ios', 'iosTests'  // replace with your iOS targets
+//    emitLineDirectives true
 
-
-    finalConfigure()          // Must be last call to configuration
+    copyDependencies true
 }

@@ -13,10 +13,11 @@ import co.touchlab.android.threading.tasks.BaseTaskQueue;
 import co.touchlab.android.threading.tasks.Task;
 import co.touchlab.android.threading.tasks.TaskQueue;
 import co.touchlab.android.threading.utils.UiThreadContext;
-import co.touchlab.doppel.testing.DoppelTest;
-import co.touchlab.doppel.testing.DopplSkipJavaJUnit4ClassRunner;
+import co.touchlab.doppl.testing.DopplContextDelegateTestRunner;
+import co.touchlab.doppl.testing.DopplRuntimeEnvironment;
+import co.touchlab.doppl.testing.DopplTest;
+
 import co.touchlab.magicthreadsdemo.tasks.NullTask;
-import co.touchlab.magicthreadsdemo.test.AndroidTestCase;
 import co.touchlab.magicthreadsdemo.test.utils.ThreadHelper;
 
 
@@ -25,9 +26,8 @@ import static org.junit.Assert.assertEquals;
 /**
  * Created by kgalligan on 10/13/14.
  */
-@DoppelTest
-@RunWith(DopplSkipJavaJUnit4ClassRunner.class)
-public class HeadlessTest extends AndroidTestCase
+@RunWith(DopplContextDelegateTestRunner.class)
+public class HeadlessTest
 {
     @Test
     public void testQueue() throws InterruptedException
@@ -46,10 +46,10 @@ public class HeadlessTest extends AndroidTestCase
             {
                 UiThreadContext.assertUiThread();
                 int count = 0;
-                TaskQueue.loadQueueDefault(getContext()).execute(new NullTask());
-                TaskQueue.loadQueueDefault(getContext()).execute(new NullTask());
-                TaskQueue.loadQueueDefault(getContext()).execute(new NullTask());
-                TaskQueue.loadQueueDefault(getContext()).execute(new NullTask());
+                TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).execute(new NullTask());
+                TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).execute(new NullTask());
+                TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).execute(new NullTask());
+                TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).execute(new NullTask());
                 countQueue(innerCount);
             }
         });
@@ -105,7 +105,7 @@ public class HeadlessTest extends AndroidTestCase
             }
         });
 
-        TaskQueue.loadQueueDefault(getContext()).execute(new NullTask());
+        TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).execute(new NullTask());
         handler.post(new Runnable()
         {
             @Override
@@ -114,7 +114,7 @@ public class HeadlessTest extends AndroidTestCase
                 countQueue(innerCount1);
             }
         });
-        TaskQueue.loadQueueDefault(getContext()).execute(new NullTask());
+        TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).execute(new NullTask());
         handler.post(new Runnable()
         {
             @Override
@@ -123,7 +123,7 @@ public class HeadlessTest extends AndroidTestCase
                 countQueue(innerCount2);
             }
         });
-        TaskQueue.loadQueueDefault(getContext()).execute(new NullTask());
+        TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).execute(new NullTask());
         handler.post(new Runnable()
         {
             @Override
@@ -155,8 +155,8 @@ public class HeadlessTest extends AndroidTestCase
         if(UiThreadContext.isInIosUiThread())
             return;
 
-        assertEquals(getContext().getFilesDir().exists(), true);
-        File dbPath = getContext().getDatabasePath("test");
+        assertEquals(DopplRuntimeEnvironment.getApplication().getFilesDir().exists(), true);
+        File dbPath = DopplRuntimeEnvironment.getApplication().getDatabasePath("test");
 
         File parentDbPath = dbPath.getParentFile();
         assertEquals(parentDbPath.exists(), true);
@@ -174,7 +174,7 @@ public class HeadlessTest extends AndroidTestCase
         System.out.println("helloCount: "+ helloCount++);
         innerCount.set(0);
         UiThreadContext.assertUiThread();
-        TaskQueue.loadQueueDefault(getContext()).query(new BaseTaskQueue.QueueQuery()
+        TaskQueue.loadQueueDefault(DopplRuntimeEnvironment.getApplication()).query(new BaseTaskQueue.QueueQuery()
         {
             @Override
             public void query(BaseTaskQueue queue, Task task)

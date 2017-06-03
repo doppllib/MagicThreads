@@ -1,6 +1,6 @@
 package co.touchlab.magicthreadsdemo.test;
 
-import org.apache.commons.lang3.StringUtils;
+import android.text.TextUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +19,6 @@ public class StaticLog
 
     public static synchronized String logOut()
     {
-        return StringUtils.join(log, "\n");
+        return TextUtils.join("\n", log);
     }
 }

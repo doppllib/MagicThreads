@@ -1,18 +1,18 @@
 //
-//  iosTests.m
-//  iosTests
+//  iostestTests.m
+//  iostestTests
 //
-//  Created by Kevin Galligan on 6/11/16.
-//  Copyright © 2016 Kevin Galligan. All rights reserved.
+//  Created by Kevin Galligan on 6/2/17.
+//  Copyright © 2017 Kevin Galligan. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>
 
-@interface iosTests : XCTestCase
+@interface iostestTests : XCTestCase
 
 @end
 
-@implementation iosTests
+@implementation iostestTests
 
 - (void)setUp {
     [super setUp];

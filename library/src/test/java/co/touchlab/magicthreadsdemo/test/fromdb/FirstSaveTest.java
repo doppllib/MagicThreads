@@ -7,9 +7,8 @@ import org.junit.runner.RunWith;
 
 import co.touchlab.android.threading.tasks.persisted.PersistedTaskQueue;
 import co.touchlab.android.threading.utils.UiThreadContext;
-import co.touchlab.doppel.testing.DoppelTest;
-import co.touchlab.doppel.testing.DopplSkipJavaJUnit4ClassRunner;
-import co.touchlab.magicthreadsdemo.test.AndroidTestCase;
+import co.touchlab.doppl.testing.DopplContextDelegateTestRunner;
+import co.touchlab.doppl.testing.DopplRuntimeEnvironment;
 import co.touchlab.magicthreadsdemo.test.NetworkExceptionCommand;
 import co.touchlab.magicthreadsdemo.test.NeverCommand;
 import co.touchlab.magicthreadsdemo.test.TestCommand;
@@ -23,9 +22,8 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by kgalligan on 10/4/14.
  */
-@DoppelTest
-@RunWith(DopplSkipJavaJUnit4ClassRunner.class)
-public class FirstSaveTest extends AndroidTestCase
+@RunWith(DopplContextDelegateTestRunner.class)
+public class FirstSaveTest
 {
 //    private Handler handler;
     PersistedTaskQueue queue;
@@ -48,7 +46,7 @@ public class FirstSaveTest extends AndroidTestCase
             {
                 UiThreadContext.assertUiThread();
 
-                queue = TestPersistedTaskQueueFactory.getInstance(getContext(), FirstSaveTest.class);
+                queue = TestPersistedTaskQueueFactory.getInstance(DopplRuntimeEnvironment.getApplication(), FirstSaveTest.class);
                 queue.execute(new TestCommand());
                 queue.execute(new NetworkExceptionCommand());
                 queue.execute(new TestCommand());

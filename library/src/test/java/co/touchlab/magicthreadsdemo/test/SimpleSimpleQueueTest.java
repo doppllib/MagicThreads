@@ -3,7 +3,7 @@ package co.touchlab.magicthreadsdemo.test;
 import org.junit.runner.RunWith;
 
 import co.touchlab.android.threading.tasks.persisted.PersistedTaskQueue;
-import co.touchlab.doppel.testing.DopplSkipJavaJUnit4ClassRunner;
+import co.touchlab.doppl.testing.DopplContextDelegateTestRunner;
 
 
 import static org.junit.Assert.assertEquals;
@@ -12,8 +12,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by kgalligan on 10/4/14.
  */
-
-@RunWith(DopplSkipJavaJUnit4ClassRunner.class)
+@RunWith(DopplContextDelegateTestRunner.class)
 public class SimpleSimpleQueueTest extends BaseSimpleQueueTestNomatch
 {
     @Override

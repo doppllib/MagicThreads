@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import co.touchlab.android.threading.tasks.persisted.PersistedTaskQueue;
 import co.touchlab.android.threading.utils.UiThreadContext;
+import co.touchlab.doppl.testing.DopplRuntimeEnvironment;
 import co.touchlab.magicthreadsdemo.test.utils.ThreadHelper;
 
 /**
@@ -40,7 +41,7 @@ public abstract class BaseSimpleQueueTestNomatch extends BaseQueueTestNomatch
             @Override
             public void run()
             {
-                queue = TestPersistedTaskQueueFactory.getInstance(getContext(), BaseSimpleQueueTestNomatch.this.getClass());
+                queue = TestPersistedTaskQueueFactory.getInstance(DopplRuntimeEnvironment.getApplication(), BaseSimpleQueueTestNomatch.this.getClass());
                 runQueueOps();
             }
         });

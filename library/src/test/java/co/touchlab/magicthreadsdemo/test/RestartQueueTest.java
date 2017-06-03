@@ -4,8 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import co.touchlab.android.threading.tasks.persisted.PersistedTaskQueue;
-import co.touchlab.doppel.testing.DoppelTest;
-import co.touchlab.doppel.testing.DopplSkipJavaJUnit4ClassRunner;
+import co.touchlab.doppl.testing.DopplContextDelegateTestRunner;
+import co.touchlab.doppl.testing.DopplRuntimeEnvironment;
+import co.touchlab.doppl.testing.DopplTest;
+
 import co.touchlab.magicthreadsdemo.test.utils.ThreadHelper;
 
 
@@ -15,8 +17,7 @@ import static org.junit.Assert.assertNull;
 /**
  * Created by kgalligan on 10/4/14.
  */
-@DoppelTest
-@RunWith(DopplSkipJavaJUnit4ClassRunner.class)
+@RunWith(DopplContextDelegateTestRunner.class)
 public class RestartQueueTest extends BaseQueueTestNomatch
 {
     PersistedTaskQueue queue;
@@ -30,7 +31,7 @@ public class RestartQueueTest extends BaseQueueTestNomatch
             @Override
             public void run()
             {
-                queue = TestPersistedTaskQueueFactory.getInstance(getContext(), RestartQueueTest.class);
+                queue = TestPersistedTaskQueueFactory.getInstance(DopplRuntimeEnvironment.getApplication(), RestartQueueTest.class);
                 queue.execute(new TestCommand());
                 queue.execute(new NetworkExceptionCommand());
                 queue.execute(new TestCommand());

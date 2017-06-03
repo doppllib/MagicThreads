@@ -22,9 +22,6 @@ public class ThreadHelper
 
     public synchronized static Handler mainHandler()
     {
-        if(Looper.getMainLooper() == null)
-            Looper.prepareMainLooper();
-
         return new Handler(Looper.getMainLooper());
     }
 }
