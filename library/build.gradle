@@ -7,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath "net.ltgt.gradle:gradle-apt-plugin:0.9"
-        classpath 'co.doppl:gradle:0.7.0'
+        classpath 'co.doppl:gradle:0.8.0'
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
     }
 }
@@ -28,81 +28,43 @@ apply plugin: 'net.ltgt.apt'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-def dopplCoreVersion = '0.7.1'
-def dopplEventbusVersion = '2.4.0.0'
-def dopplGsonVersion = '2.6.2.8'
-def dopplRetrofitVersion = '1.9.0.0'
-def dopplRxJavaVersion = '1.2.1.1'
+def javaCoreVersion = '0.7.4'
+def dopplCoreVersion = '0.7.4.0'
+
+def dopplEventbusVersion = '2.4.0.2'
+def dopplGsonVersion = '2.6.2.0'
+def dopplRetrofitVersion = '1.9.0.2'
+def dopplRxJavaVersion = '1.2.1.2'
 
 dependencies {
     compile 'junit:junit:4.11'
 
-    provided "co.doppl.lib:androidbase:$dopplCoreVersion"
-    testCompile "co.doppl.lib:androidbasetest:$dopplCoreVersion"
+    provided "co.doppl.lib:androidbase:$javaCoreVersion"
+    testCompile "co.doppl.lib:androidbasetest:$javaCoreVersion"
 
-    doppl "co.doppl.lib:androidbase:$dopplCoreVersion:doppl"
-    testDoppl "co.doppl.lib:androidbasetest:$dopplCoreVersion:doppl"
+    doppl "co.doppl.lib:androidbase:$dopplCoreVersion"
+    testDoppl "co.doppl.lib:androidbasetest:$dopplCoreVersion"
 
     compile 'de.greenrobot:eventbus:2.4.0'
-    doppl "co.doppl.de.greenrobot:eventbus:$dopplEventbusVersion:doppl"
+    doppl "co.doppl.de.greenrobot:eventbus:$dopplEventbusVersion"
 
     compile 'com.google.code.gson:gson:2.6.2'
-    doppl "co.doppl.com.google.code.gson:gson:$dopplGsonVersion:doppl"
+    doppl "co.doppl.com.google.code.gson:gson:$dopplGsonVersion"
 
     provided 'com.squareup.retrofit:retrofit:1.9.0'
-    doppl "co.doppl.com.squareup.retrofit:retrofit:$dopplRetrofitVersion:doppl"
+    doppl "co.doppl.com.squareup.retrofit:retrofit:$dopplRetrofitVersion"
 
 
-    doppl "co.doppl.io.reactivex:rxjava:$dopplRxJavaVersion:doppl"
+    doppl "co.doppl.io.reactivex:rxjava:$dopplRxJavaVersion"
 }
 
 group = 'co.touchlab'
-version = '0.9.1.0'
+version = '0.9.1.1'
 
-ext.bintrayGitUrl = 'https://github.com/doppllib/MagicThreads-doppl.git'
+ext.bintrayGitUrl = 'https://github.com/doppllib/MagicThreads.git'
 
+apply from: "$dopplSharedScriptHome/doppllibpublish.gradle"
 apply from: "$dopplSharedScriptHome/bintray.gradle"
-
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            from components.java
-            artifact(dopplArchive) {
-                classifier 'doppl'
-                extension 'jar'
-            }
-            pom {
-                withXml {
-                    asNode().dependencies.dependency.find {
-                        it.artifactId.text() == "eventbus"
-                    }.version[0].value = dopplEventbusVersion
-                    asNode().dependencies.dependency.find {
-                        it.artifactId.text() == "eventbus"
-                    }.groupId[0].value = "co.doppl.de.greenrobot"
-
-                    asNode().dependencies.dependency.find {
-                        it.artifactId.text() == "retrofit"
-                    }.version[0].value = dopplRetrofitVersion
-                    asNode().dependencies.dependency.find {
-                        it.artifactId.text() == "retrofit"
-                    }.groupId[0].value = "co.doppl.com.squareup.retrofit"
-
-                    asNode().dependencies.dependency.find {
-                        it.artifactId.text() == "gson"
-                    }.version[0].value = dopplGsonVersion
-                    asNode().dependencies.dependency.find {
-                        it.artifactId.text() == "gson"
-                    }.groupId[0].value = "co.doppl.com.google.code.gson"
-                }
-            }
-        }
-    }
-    repositories {
-        maven {
-            url dopplMavenDeploy
-        }
-    }
-}
 
 test{
     enabled = false
@@ -113,8 +75,6 @@ dopplConfig {
 
     copyMainOutput "iostest/dopplframework/main"
     copyTestOutput "iostest/dopplframework/test"
-
-//    emitLineDirectives true
 
     copyDependencies true
 }
