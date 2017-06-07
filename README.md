@@ -1,69 +1,50 @@
-MagicThreads is a threading support library for Android.  Its mostly for internal work at TouchLab, so you'll find the
-docs kind of lacking, but its good stuff.
+MagicThreads is a threading support library for Android. It was written a few years ago to provide a simple thread queue for 'live' tasks, and a persisted thread queue for offline support. It was mostly for internal projects at touchlab. It is very similar to [android-priority-jobqueue](https://github.com/yigit/android-priority-jobqueue), and if you were looking for a persisted queue, I would recommend that one. The conceptual differences are actually pretty minor, and in fact, I wound up building this because the android-priority-jobqueue seemed at the time to be pretty complex under the hood (manual threading and whatnot). It's gone through a major rewrite and is definitely more tested and reviewed. We'll be moving to it in the future.
 
-Demo project is in a different repo.  Intellij doesn't like gradle android projects.  Studio didn't seem to like 
-the java/maven project.
+We are only providing this library so you'll be able to build the Droidcon sample app. I would not suggest learning it as we have moved on to use RxJava for threading and will be using the android-priority-jobqueue for persisted tasks and offline.
 
-https://github.com/touchlab/MagicThreadsDemo
-
-Watch a demo video to see what's happening: https://www.youtube.com/watch?v=JWU2a5IWziQ&feature=youtu.be
-
-## tasks
-
-TaskQueue is a background task executor. Its conceptually similar to running tasks in an executor service,
-but has a few features that stick out. Tasks run in the background, but orchestration is done with the main thread.
-The benefit is a long story, but in summary, it keeps timing simple when working with the UI. Also, you can query the live queue.
-The main use case is to start a long running process, and enable/disable your input based on the live state of the queue
-itself. Its safer than using surrogate boolean state, and makes rotation support easier (IMHO. YMMV).
-
-### Sticky Tasks
-
-StickyTask is a special variant of Task.  The main purpose is to associate a particular task with a particular Fractivity
-instance.  Using Task and EventBus means you're listening for responses based on type.  This works in many cases, but can also lead
- to strange issues.  For example, if you have a "user profile" screen, and a "friends" list off of it, its easy to imagine the following:
-
-1) Go to User Profile
-2) Click Friends
-3) Click on another user, which goes to their User Profile
-
-At this point, the User Profile instance in #1 is listening for the info load, as well as #3.  When you click back to #1, you'll notice its
-showing the info from #3.
-
-StickyTask avoids this.  Create a StickyTaskManager on onCreate, make sure to implement the lifecycle properly, and you'll make sure your
-tasks are for you.
-
-### Persisted Tasks
+### What's a persisted task?
 
 Persisted tasks allow operations to be run later, in the case where you either don't have a good network connection, the server is down, etc.
 Tasks extend PersistedTask, and non-transient fields are persisted to local disk.
 
 [Persisted Task Queue](https://github.com/touchlab/MagicThreads/blob/master/library/docs/PERSISTED_QUEUE.md)
 
-## eventbus
+# Doppl Fork
 
-A minor extension on EventBus from green robot. By default, EventBus will push errors onto the bus
-itself. You need to remember to catch them, then do something. That's what I'd call a pit of failure,
-as you need to remember to do this, and people are bad at remembering things.
+This is a fork of the touchlab MagicThreads library to provide tests and modifications to support
+iOS development with J2objc using the [Doppl build framework](http://doppl.co/). This library is deprecated, and only
+included to support building the Droidcon sample app.
 
-EventBusExt basically throws exceptions when they happen. Make app crash. Fix.
+## Versions
 
-## loaders
+[0.9.1](https://github.com/doppllib/MagicThreads/tree/v0.9.1)
 
-A suite of loaders. I spent a lot of time trying to get away from loaders. They seem to complicated.
-However, as I went along "fixing" them, I found out why most of that complexity existed, and have
-come around full circle. Assuming you aren't recreating the way the UI works (Square with Mortar/Flow
-for example), Loaders work well.
+## Usage
 
-[More Loaders Info](https://github.com/touchlab/MagicThreads/blob/master/LOADERS.md)
+```groovy
+dependencies {
+    compile 'co.touchlab:magicthreads:0.9.1'
+    doppl 'co.touchlab:magicthreads:0.9.1.1'
+}
+```
 
-## utils
+## Status
 
-UiThreadContext lets you assert if you're in the main thread or not in the main thread. I sometimes put that into
-methods where the calling context isn't entirely clear.
+Stable. No known memory issues. Tests passing, but need to be run in the simulator directly. Because the library manages threading back and forth to the main thread, we can't suspend the main thread to wait for execution. Will come up with a solution for other libraries with the same issue, but this one is not a priority.
 
-## errorcontrol
+License
+=======
 
-This is in development. The basic idea is there are 2 types of exceptions in this world:
-hard and soft. Soft happen sometimes, due to current conditions (basically network problems).
-Hard is everything else. You *shouldn't* have hard exceptions, and in general I prefer
-to let the app crash from unknown hard exceptions. Fail and fix.
+    Copyright 2014 touchlab, Inc.
+
+    Licensed under the Apache License, Version 2.0 (the 'License');
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an 'AS IS' BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
