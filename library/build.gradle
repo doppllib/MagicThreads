@@ -32,8 +32,8 @@ def javaCoreVersion = '0.7.4'
 def dopplCoreVersion = '0.7.4.0'
 
 def dopplEventbusVersion = '2.4.0.2'
-def dopplGsonVersion = '2.6.2.0'
-def dopplRetrofitVersion = '1.9.0.2'
+def dopplGsonVersion = '2.6.2.1'
+def dopplRetrofitVersion = '1.9.0.3'
 def dopplRxJavaVersion = '1.2.1.2'
 
 dependencies {
@@ -59,7 +59,7 @@ dependencies {
 }
 
 group = 'co.touchlab'
-version = '0.9.1.2-SNAPSHOT'
+version = '0.9.1.2'
 
 ext.bintrayGitUrl = 'https://github.com/doppllib/MagicThreads.git'
 
