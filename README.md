@@ -24,13 +24,17 @@ included to support building the Droidcon sample app.
 ```groovy
 dependencies {
     compile 'co.touchlab:magicthreads:0.9.1'
-    doppl 'co.touchlab:magicthreads:0.9.1.1'
+    doppl 'co.touchlab:magicthreads:0.9.1.2'
 }
 ```
 
 ## Status
 
 Stable. No known memory issues. Tests passing, but need to be run in the simulator directly. Because the library manages threading back and forth to the main thread, we can't suspend the main thread to wait for execution. Will come up with a solution for other libraries with the same issue, but this one is not a priority.
+
+## Library Development
+
+See [docs](http://doppl.co/docs/createlibrary.html) for an overview of our setup and repo org for forked library development.
 
 License
 =======
