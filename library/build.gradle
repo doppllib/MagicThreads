@@ -28,40 +28,40 @@ apply plugin: 'net.ltgt.apt'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-def javaCoreVersion = '0.7.4'
-def dopplCoreVersion = '0.7.4.0'
+def javaCoreVersion = '0.7.5'
+def dopplCoreVersion = '0.7.5.0'
 
-def dopplEventbusVersion = '2.4.0.2'
+def dopplEventbusVersion = '2.4.0.3'
 def dopplGsonVersion = '2.6.2.1'
 def dopplRetrofitVersion = '1.9.0.3'
 def dopplRxJavaVersion = '1.2.1.2'
 
 dependencies {
-    compile 'junit:junit:4.11'
+    testCompile 'junit:junit:4.11'
 
-    provided "co.doppl.lib:androidbase:$javaCoreVersion"
+    compileOnly "co.doppl.lib:androidbase:$javaCoreVersion"
     testCompile "co.doppl.lib:androidbasetest:$javaCoreVersion"
 
     doppl "co.doppl.lib:androidbase:$dopplCoreVersion"
     testDoppl "co.doppl.lib:androidbasetest:$dopplCoreVersion"
 
-    compile 'de.greenrobot:eventbus:2.4.0'
+    compileOnly 'de.greenrobot:eventbus:2.4.0'
     doppl "co.doppl.de.greenrobot:eventbus:$dopplEventbusVersion"
 
     compile 'com.google.code.gson:gson:2.6.2'
     doppl "co.doppl.com.google.code.gson:gson:$dopplGsonVersion"
 
-    provided 'com.squareup.retrofit:retrofit:1.9.0'
+    compileOnly 'com.squareup.retrofit:retrofit:1.9.0'
     doppl "co.doppl.com.squareup.retrofit:retrofit:$dopplRetrofitVersion"
-
 
     doppl "co.doppl.io.reactivex:rxjava:$dopplRxJavaVersion"
 }
 
 group = 'co.touchlab'
-version = '0.9.1.3-SNAPSHOT'
+version = '0.9.2.0'
 
 ext.bintrayGitUrl = 'https://github.com/doppllib/MagicThreads.git'
+ext.javaVersion = '0.9.2'
 
 apply from: "$dopplSharedScriptHome/doppllibpublish.gradle"
 apply from: "$dopplSharedScriptHome/bintray.gradle"
