@@ -23,8 +23,8 @@ included to support building the Droidcon sample app.
 
 ```groovy
 dependencies {
-    compile 'co.touchlab:magicthreads:0.9.1'
-    doppl 'co.touchlab:magicthreads:0.9.1.2'
+    compile 'co.touchlab:magicthreads:0.9.3'
+    doppl 'co.touchlab:magicthreads:0.9.3.0'
 }
 ```
 
